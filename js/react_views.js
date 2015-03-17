@@ -2,14 +2,29 @@ $(function() {
 
   var SearchBar = React.createClass({displayName: "SearchBar",
 
+    getInitialState: function() {
+      return {keyword: ""};
+
+    },
+
+    updateKeywords: function(e){
+      this.setState({keyword: e.target.value})
+
+    },
+
+    placeholderSubmit: function(e){
+      e.preventDefault();
+      this.props.onSubmit(this.state.keyword)
+    },
+
     render: function() {
       return (
         React.createElement("div", {className: "box"}, 
           React.createElement("div", {className: "container-1"}, 
-            React.createElement("form", null, 
+            React.createElement("form", {onSubmit: this.placeholderSubmit}, 
               React.createElement("span", {className: "icon"}, React.createElement("i", {className: "fa fa-search"})), 
-              React.createElement("input", {type: "search", id: "search", placeholder: "Search...", value: this.props.value, onClick: this.props.onClick}), 
-              React.createElement("input", {type: "submit"})
+              React.createElement("input", {type: "search", id: "search", placeholder: "Search...", value: this.state.keyword, onChange: this.updateKeywords}), 
+              React.createElement("input", {type: "submit", value: "submit"})
             )
           )
         )
@@ -18,23 +33,36 @@ $(function() {
 
   });
 
+
   var SearchBox = React.createClass({displayName: "SearchBox",
+
+    onSubmit: function(keywords) {
+     console.log(keywords)
+    },
 
     render: function() {
       return (
         React.createElement("div", {className: "search-box"}, 
-          React.createElement(SearchBar, {value: this.props.searchbar, onClick: this.props.onClick})
+          React.createElement(SearchBar, {onSubmit: this.onSubmit})
         )
       );
     }
- });
+  });
 
-  var onClick = function(e){
-    var value = e.target.value;
-    console.log(value);
-  }
+
+
 
   var searching = React.render(React.createElement(SearchBox, null), document.body);
   
 
 });//end entire function
+
+
+
+
+
+
+
+
+
+
